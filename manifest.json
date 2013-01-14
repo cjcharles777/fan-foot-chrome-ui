@@ -1,0 +1,12 @@
+{
+"manifest_version": 2,
+  "name": "Fantasy Football App",
+  "description": "Fantasy Football Tool",
+  "version": "0.1",
+  "app": {
+    "background": {
+      "scripts": ["js/background.js"]
+    }
+  },
+  "icons": { "16": "calculator-16.png", "128": "calculator-128.png" }
+}
