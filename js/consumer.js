@@ -25,7 +25,11 @@ function signForm() {
                    , tokenSecret   : consumer.yahoo.tokenSecret};
     var message = { action: form.action
                   , method: form.method
-                  , parameters: []    
+                  , parameters: [
+                  					["oauth_version","1.0"],
+                  					["oauth_consumer_key", consumer.yahoo.consumerKey],
+                  					["oauth_callback","http://pnnmcmjjglpilalmpnhikadcdbippibn.chromiumapp.org"]
+                  				]    
                   };
                   
     OAuth.setTimestampAndNonce(message);
@@ -36,10 +40,11 @@ function signForm() {
     var url = "https://api.login.yahoo.com/oauth/v2/"+
   				"get_request_token?oauth_nonce="+OAuth.getParameter(parameterMap, "oauth_nonce")+
   				"&oauth_timestamp="+OAuth.getParameter(parameterMap, "oauth_timestamp")+
-  				"&oauth_consumer_key="+ consumer.yahoo.consumerSecret+
+  				"&oauth_consumer_key="+ OAuth.getParameter(parameterMap, "oauth_consumer_key")+
   				"&oauth_signature_method="+consumer.yahoo.serviceProvider.signatureMethod+
                 "&oauth_signature="+OAuth.percentEncode(OAuth.getParameter(parameterMap,'oauth_signature'))+
-  				"&oauth_version=1.0";
+  				"&oauth_version="+ OAuth.getParameter(parameterMap, "oauth_version")+
+  				"&oauth_callback="+ OAuth.percentEncode(OAuth.getParameter(parameterMap, "oauth_callback"));
                   
 
    var xhr = new XMLHttpRequest();
