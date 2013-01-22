@@ -49,7 +49,14 @@ function signForm() {
 
    var xhr = new XMLHttpRequest();
 	xhr.open(form.method, url, true);
-	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.onreadystatechange=function()
+	  {
+	  if (xhr.readyState==4 && xhr.status==200)
+	    {
+	    	var result = xhr.responseText;  //works like a glove
+	    }
+	  }
 	xhr.send();
 	var result = xhr.responseText;
     //$.ajax("http://api.twitter.com/1/statuses/home_timeline.json?callback=?");
