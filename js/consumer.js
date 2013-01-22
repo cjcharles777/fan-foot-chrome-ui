@@ -32,8 +32,22 @@ function signForm() {
     OAuth.SignatureMethod.sign(message, accessor);
     //alert(outline("message", message));
     var parameterMap = OAuth.getParameterMap(message.parameters);
-   
-    
+                  
+    var url = "https://api.login.yahoo.com/oauth/v2/"+
+  				"get_request_token?oauth_nonce="+OAuth.getParameter(parameterMap, "oauth_nonce")+
+  				"&oauth_timestamp="+OAuth.getParameter(parameterMap, "oauth_timestamp")+
+  				"&oauth_consumer_key="+ consumer.yahoo.consumerSecret+
+  				"&oauth_signature_method="+consumer.yahoo.serviceProvider.signatureMethod+
+                "&oauth_signature="+OAuth.percentEncode(OAuth.getParameter(parameterMap,'oauth_signature'))+
+  				"&oauth_version=1.0";
+                  
+
+   var xhr = new XMLHttpRequest();
+	xhr.open(form.method, url, true);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.send();
+	var result = xhr.responseText;
+    //$.ajax("http://api.twitter.com/1/statuses/home_timeline.json?callback=?");
     return true;
 }
 function main() {

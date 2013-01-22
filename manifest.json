@@ -8,6 +8,12 @@
       "scripts": ["js/background.js"]
     }
   },
+   "permissions": [
+    "http://*/*",
+    "https://*/*",
+    "https://www.google.com/*",
+    "http://www.google.com/*"
+    ],
   "icons": { "16": "calculator-16.png", "128": "calculator-128.png" }, 
   "key": "ZmFuZm9vdGFwcHJ1bGVz",
   "permissions":["experimental"]
