@@ -14,9 +14,11 @@ html5rocks.indexedDB.open = function() {
 
       // onsuccess is the only place we can create Object Stores
       setVrequest.onfailure = html5rocks.indexedDB.onerror;
-      setVrequest.onsuccess = function(e) {
-        var store = db.createObjectStore("todo",
+      setVrequest.onupgradeneeded = function(e) {
+        var store = db.createObjectStore("oauth",
           {keyPath: "timeStamp"});
+          
+        store.createIndex("oauth_token", "oauth_token", { unique: false });
         e.target.transaction.oncomplete = function() {
           html5rocks.indexedDB.getAllTodoItems();
         };
