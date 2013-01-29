@@ -9,7 +9,6 @@
     }
   },
    "permissions": ["https://api.login.yahoo.com/oauth/v2/"],
-  "content_security_policy": "script-src 'self' https://api.login.yahoo.com; object-src 'self' https://api.login.yahoo.com",
   "icons": { "16": "calculator-16.png", "128": "calculator-128.png" }, 
   "key": "ZmFuZm9vdGFwcHJ1bGVz"
 }

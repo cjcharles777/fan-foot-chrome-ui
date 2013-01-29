@@ -64,7 +64,10 @@ function getRequestToken() {
 				var key = oauthArray[i].split("=");
 				myMap[key[0]] = key[1];
 			}
-			window.open(    OAuth.decodePercent(myMap.xoauth_request_auth_url),
+			var transaction = db.transaction(["oauth"], "readwrite");
+			var objectStore = transaction.objectStore("oauth");
+			 var request = objectStore.add(myMap);
+			window.open(OAuth.decodePercent(myMap.xoauth_request_auth_url),
 							 "OauthAuthorizationPage", 
 							 "resizable=yes,scrollbars=yes,status=yes");
 	    }
@@ -136,8 +139,9 @@ function getAccessToken()
     //$.ajax("http://api.twitter.com/1/statuses/home_timeline.json?callback=?");
     return true;
 }
-function main() {
-  // Initialization work goes here.
+function main() 
+{
+ openDb();
 }
 function clickHandler(e) {
  getRequestToken();

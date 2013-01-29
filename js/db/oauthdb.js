@@ -1,13 +1,12 @@
-html5rocks.indexedDB.db = null;
+db = null;
 
-html5rocks.indexedDB.open = function() {
+function openDb() {
   var request = indexedDB.open("fantasyfootballdb");
 
   request.onsuccess = function(e) 
   {
      var v = "1.0";
-    html5rocks.indexedDB.db = e.target.result;
-    var db = html5rocks.indexedDB.db;
+   db = e.target.result;
     // We can only create Object stores in a setVersion transaction;
     if (v!= db.version) {
       var setVrequest = db.setVersion(v);
@@ -23,12 +22,8 @@ html5rocks.indexedDB.open = function() {
           html5rocks.indexedDB.getAllTodoItems();
         };
       };
-    } else {
-      request.transaction.oncomplete = function() {
-        html5rocks.indexedDB.getAllTodoItems();
-      };
     }
   };
 
-  request.onfailure = html5rocks.indexedDB.onerror;
+  
 };
