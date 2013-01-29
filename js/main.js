@@ -1,5 +1,4 @@
-var id = { "https://api.login.yahoo.com/oauth/v2/get_request_token?client_id=123456789012345&"+
-"redirect_uri=https://abcdefghijklmnopqrstuvwxyzabcdef.chromiumapp.org/provider_cb&response_type=token&scope=user_photos"}
+
 
 
 var makeSignedRequest = function(ck,cks,encodedurl) {     
