@@ -12,8 +12,8 @@
   });
  
   const DB_NAME = 'fantasyfootballdb';
-  const DB_VERSION = 1; // Use a long long for this value (don't use a float)
-  const DB_STORE_NAME = 'oauth';
+  const DB_VERSION = 5; // Use a long long for this value (don't use a float)
+  const DB_STORE_NAME_OAUTH = 'oauth';
  
   var db;
  
@@ -37,12 +37,16 @@ function openDb() {
  
     req.onupgradeneeded = function (evt) {
       console.log("openDb.onupgradeneeded");
+      console.log(" Does "+ DB_STORE_NAME_OAUTH + " exsist? :" +(typeof objectStore === "undefined"))
+        var objectStore = evt.currentTarget.transaction.objectStore(DB_STORE_NAME_OAUTH);
+        if(!(typeof objectStore === "undefined"))
+        {
+        	 evt.currentTarget.result.deleteObjectStore(DB_STORE_NAME_OAUTH);
+        }
+     
       var store = evt.currentTarget.result.createObjectStore(
-        DB_STORE_NAME, { keyPath: 'id', autoIncrement: true });
- 
-      //store.createIndex('biblioid', 'biblioid', { unique: true });
-      store.createIndex('oauth_token', 'oauth_token', { unique: true });
-      //store.createIndex('year', 'year', { unique: false });
+        DB_STORE_NAME_OAUTH, { keyPath: 'name' });
+        store.createIndex('oauth_token', 'oauth_token', { unique: true });
     };	
 /**
   var request = indexedDB.open("fantasyfootballdb");

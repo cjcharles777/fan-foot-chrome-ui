@@ -66,6 +66,7 @@ function getRequestToken() {
 			}
 			var transaction = db.transaction(["oauth"], "readwrite");
 			var objectStore = transaction.objectStore("oauth");
+			myMap.name = 'userinfo';
 			 var request = objectStore.add(myMap);
 			window.open(OAuth.decodePercent(myMap.xoauth_request_auth_url),
 							 "OauthAuthorizationPage", 
