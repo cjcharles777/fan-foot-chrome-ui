@@ -94,6 +94,7 @@ function getAccessToken()
                   					["oauth_version","1.0"],
                   					["oauth_consumer_key", consumer.yahoo.consumerKey],
                   					["oauth_callback","oob"]
+                  					//TODO: move map to class level and add a getter from db and setter with db add to parameters
                   				]    
                   };
                   
@@ -103,13 +104,14 @@ function getAccessToken()
     var parameterMap = OAuth.getParameterMap(message.parameters);
                   
     var url = "https://api.login.yahoo.com/oauth/v2/"+
-  				"get_request_token?oauth_nonce="+OAuth.getParameter(parameterMap, "oauth_nonce")+
+  				"get_token?oauth_nonce="+OAuth.getParameter(parameterMap, "oauth_nonce")+
   				"&oauth_timestamp="+OAuth.getParameter(parameterMap, "oauth_timestamp")+
   				"&oauth_consumer_key="+ OAuth.getParameter(parameterMap, "oauth_consumer_key")+
   				"&oauth_signature_method="+consumer.yahoo.serviceProvider.signatureMethod+
                 "&oauth_signature="+OAuth.percentEncode(OAuth.getParameter(parameterMap,'oauth_signature'))+
   				"&oauth_version="+ OAuth.getParameter(parameterMap, "oauth_version")+
-  				"&oauth_callback="+ OAuth.percentEncode(OAuth.getParameter(parameterMap, "oauth_callback"));
+  				"&oauth_verifier="+ OAuth.percentEncode(OAuth.getParameter(parameterMap, "oauth_callback"));
+  				"&oauth_token="+ OAuth.percentEncode(OAuth.getParameter(parameterMap, "oauth_callback"))
                   
 
    var xhr = new XMLHttpRequest();
@@ -140,15 +142,14 @@ function getAccessToken()
     //$.ajax("http://api.twitter.com/1/statuses/home_timeline.json?callback=?");
     return true;
 }
+
 function main() 
 {
  openDb();
 }
-function clickHandler(e) {
- getRequestToken();
-}
+
 
 document.addEventListener('DOMContentLoaded', function () {
-  document.querySelector('button').addEventListener('click', clickHandler);
+  document.querySelector('#yahoo_request').addEventListener('click', getRequestToken);
   main();
 });
