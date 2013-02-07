@@ -1,4 +1,4 @@
-//(function () {
+
   var COMPAT_ENVS = [
     ['Firefox', ">= 16.0"],
     ['Google Chrome',
@@ -12,7 +12,7 @@
   });
  
   const DB_NAME = 'fantasyfootballdb';
-  const DB_VERSION = 5; // Use a long long for this value (don't use a float)
+  const DB_VERSION = 6; // Use a long long for this value (don't use a float)
   const DB_STORE_NAME_OAUTH = 'oauth';
  
   var db;
@@ -20,7 +20,7 @@
   // Used to keep track of which view is displayed to avoid to uselessly reload it
   var current_view_pub_key;
  
-function openDb() {
+function openDb(success_callback) {
 	
     console.log("openDb ...");
     var req = indexedDB.open(DB_NAME, DB_VERSION);
@@ -30,6 +30,8 @@ function openDb() {
       // db = req.result;
       db = this.result;
       console.log("openDb DONE");
+      console.log("openDb loading previous oauth details ");
+      checkForOauthParams(success_callback);
     };
     req.onerror = function (evt) {
       console.error("openDb:", evt.target.errorCode);
@@ -46,31 +48,20 @@ function openDb() {
      
       var store = evt.currentTarget.result.createObjectStore(
         DB_STORE_NAME_OAUTH, { keyPath: 'name' });
-        store.createIndex('oauth_token', 'oauth_token', { unique: true });
+        store.createIndex('sessionHandle', 'sessionHandle', { unique: true });
     };	
-/**
-  var request = indexedDB.open("fantasyfootballdb");
 
-  request.onsuccess = function(e) 
-  {
-     var v = 1;
-   db = this.result;
-    // We can only create Object stores in a setVersion transaction;
-      var setVrequest = db.setVersion(v);
-	};
-      // onsuccess is the only place we can create Object Stores
-      //setVrequest.onfailure = html5rocks.indexedDB.onerror;
-      request.onupgradeneeded = function(e) 
-      {
-      	console.log("openDb.onupgradeneeded");
-        var store = db.createObjectStore("oauth",{keyPath: "timeStamp"});
-          
-        store.createIndex("oauth_token", "oauth_token", { unique: false });
-        e.target.transaction.oncomplete = function() {
-          html5rocks.indexedDB.getAllTodoItems();
-        };
-      };
-    
-**/  
 }
-//})(); // Immediately-Invoked Function Expression (IIFE)
+function checkForOauthParams(success_callback)
+{
+	var transaction = db.transaction(["oauth"], "readwrite");
+    var objectStore = transaction.objectStore("oauth");
+	var request = objectStore.get('userinfo');
+	request.onerror = function(event) {
+    console.log('Error getting previous');
+	};
+	request.onsuccess = function(event) 
+	{
+    	success_callback(event.target.result);
+	};
+}
